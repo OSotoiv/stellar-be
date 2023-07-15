@@ -29,6 +29,7 @@ async function authenticateJWT(req, res, next) {
                 throw new UnauthorizedError()
             }
         }
+        throw new UnauthorizedError()
     } catch (err) {
         return next();
     }
@@ -36,6 +37,7 @@ async function authenticateJWT(req, res, next) {
 
 //check if user is an Admin
 function isAdmin(req, res, next) {
+    console.log("isAdmin")
     try {
         if (res.locals.user && res.locals.user.isAdmin) {
             return next();

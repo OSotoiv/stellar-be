@@ -18,7 +18,7 @@ class Exam {
         return id;
     }
 
-    static async addQuestion(testId, testData) {
+    static async addQuestion(examID, examData) {
         const { setup_text,
             question_text,
             option_a_text,
@@ -31,49 +31,46 @@ class Exam {
             option_d_image_url,
             correct_answer,
             image_url_1,
-            image_url_2 } = testData;
+            image_url_2 } = examData;
         const result = await db.query(
-            `INSERT INTO math_questions
+            `INSERT INTO exam_questions
             (setup_text, image_url_1, image_url_2, question_text, option_a_text,
                 option_a_image_url, option_b_text, option_b_image_url, option_c_text, option_c_image_url,
-                 option_d_text, option_d_image_url, correct_answer)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+                 option_d_text, option_d_image_url, correct_answer, math_exam_id)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
             RETURNING id`,
             [setup_text, image_url_1, image_url_2, question_text, option_a_text,
                 option_a_image_url, option_b_text, option_b_image_url, option_c_text, option_c_image_url,
-                option_d_text, option_d_image_url, correct_answer]);
+                option_d_text, option_d_image_url, correct_answer, examID]);
 
         const { id: questionId } = result.rows[0];
-        const mathTestQuestionsId = await this.connectQuestionToTest(testId, questionId);
+        const mathTestQuestionsId = await Exam.connectQuestionToTest(examID, questionId);
         return mathTestQuestionsId;
     }
-    static async connectQuestionToTest(testId, questionId) {
+    static async connectQuestionToTest(examId, questionId) {
         const result = await db.query(
-            `INSERT INTO math_test_questions
-            (math_test_id, question_id)
+            `INSERT INTO math_exam_questions
+            (math_exam_id, question_id)
             VALUES($1, $2)
             RETURNING id`,
-            [testId, questionId]);
+            [examId, questionId]);
         const { id } = result.rows[0];
         return id;
     }
-    static async viewTest(testId) {
+    static async viewExam(examId) {
         const result = await db.query(
-            `SELECT mq.*, mt.name
-            FROM math_questions mq
-            JOIN math_test_questions mtq ON mq.id = mtq.question_id
-            JOIN math_tests mt ON mt.id = mtq.math_test_id
-            WHERE mtq.math_test_id = $1;`,
-            [testId])
+            `SELECT eq.*, me.title
+            FROM exam_questions eq
+            JOIN math_exam_questions meq ON eq.id = meq.question_id
+            JOIN math_exam me ON me.id = meq.math_exam_id
+            WHERE meq.math_exam_id = $1;`,
+            [examId])
         return result.rows;
     }
-    static async all(username) {
+    static async all() {
         const result = await db.query(
-            `SELECT math_tests.id, math_tests.name
-            FROM math_tests
-            JOIN users ON math_tests.creator_id = users.username
-            WHERE users.username = $1;`,
-            [username])
+            `SELECT math_exam.id, math_exam.title
+            FROM math_exam;`)
         return result.rows;
     }
 }
