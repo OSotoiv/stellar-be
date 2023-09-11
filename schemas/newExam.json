@@ -5,10 +5,19 @@
     "properties": {
         "title": {
             "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "grade_level": {
+            "type": "integer",
+            "minimum": 0
         }
     },
     "additionalProperties": false,
     "required": [
-        "title"
+        "title",
+        "description",
+        "grade_level"
     ]
 }

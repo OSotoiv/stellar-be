@@ -29,6 +29,7 @@ async function authenticateJWT(req, res, next) {
                 throw new UnauthorizedError()
             }
         }
+        //though an error was thrown here we still move on to next no matter what.
         throw new UnauthorizedError()
     } catch (err) {
         return next();
@@ -37,12 +38,11 @@ async function authenticateJWT(req, res, next) {
 
 //check if user is an Admin
 function isAdmin(req, res, next) {
-    console.log("isAdmin")
     try {
         if (res.locals.user && res.locals.user.isAdmin) {
             return next();
         }
-        throw new UnauthorizedError("You are not an Admin");
+        throw new UnauthorizedError();
     } catch (err) {
         return next(err);
     }

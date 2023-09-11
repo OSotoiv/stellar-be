@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "username": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+        },
+        "exam_score": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "exam_time": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "exam_id": {
+            "type": "integer",
+            "minimum": 1
+        }
+    },
+    "required": [
+        "username",
+        "exam_score",
+        "exam_time",
+        "exam_id"
+    ],
+    "additionalProperties": false
+}

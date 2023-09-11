@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/authUser.json",
+    "type": "object",
+    "properties": {
+        "setup_text": {
+            "type": "string"
+        },
+        "question_text": {
+            "type": "string"
+        },
+        "option_a_text": {
+            "type": "string"
+        },
+        "option_b_text": {
+            "type": "string"
+        },
+        "option_c_text": {
+            "type": "string"
+        },
+        "option_d_text": {
+            "type": "string"
+        },
+        "correct_answer": {
+            "type": "string"
+        },
+        "grade_level": {
+            "type": "integer"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "setup_text",
+        "question_text",
+        "option_a_text",
+        "option_b_text",
+        "option_c_text",
+        "option_d_text",
+        "correct_answer",
+        "grade_level"
+    ]
+}
