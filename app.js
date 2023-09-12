@@ -13,8 +13,11 @@ app.use(async (req, res, next) => {
     console.log(`${req.method} ${req.url}`);
     next()
 })
+// app.use(cors({
+//     origin: 'http://localhost:3000' // update with your domain and port
+// }));
 app.use(cors({
-    origin: 'http://localhost:3000' // update with your domain and port
+    origin: '*' // update with your domain and port
 }));
 app.use(express.json());
 app.use(authenticateJWT);
