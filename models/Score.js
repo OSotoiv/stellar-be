@@ -56,7 +56,7 @@ class Score {
         )
         return result.rows;
     }
-    
+
     static async allLeaders() {
         const allExams = await db.query(
             `SELECT m.id AS exam_id, m.title AS exam_title
