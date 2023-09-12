@@ -3,7 +3,7 @@ const { SECRET_KEY } = require("../config");
 
 /** return signed JWT from user data. */
 
-function createToken(user) { //NOTES.md #002
+function createToken(user) {
     let payload = {
         username: user.username,
         isAdmin: true
