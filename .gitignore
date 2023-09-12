@@ -3,3 +3,7 @@ node_modules/
 coverage/
 data.sql
 notes.txt
+npm-debug.log
+.DS_Store
+/*.env
+/node_modules
