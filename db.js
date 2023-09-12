@@ -6,13 +6,10 @@ let db;
 
 if (process.env.NODE_ENV === "production") {
     db = new Client({
-        user: process.env.DB_USER,
-        host: 'localhost',
-        database: getDatabaseUri(),
-        password: process.env.DB_PASSWORD,
+        connectionString: process.env.DATABASE_URL,
         ssl: {
-            rejectUnauthorized: false
-        }
+            rejectUnauthorized: false,
+        },
     });
 } else {
     db = new Client({
