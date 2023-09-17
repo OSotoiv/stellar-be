@@ -5,8 +5,12 @@ const { BadRequestError } = require("../expressError");
 const Score = require("../models/Score");
 const scoreSchema = require("../schemas/score.json");
 const jsonschema = require("jsonschema");
+const corsMiddleware = require("../middleware/corsMiddleware")
+const { isAdmin } = require("../middleware/auth");
 
-router.post('/', async (req, res, next) => {
+router.use(corsMiddleware)
+
+router.post('/', isAdmin, async (req, res, next) => {
     try {
         const validator = jsonschema.validate(req.body, scoreSchema);
         if (!validator.valid) {
@@ -22,7 +26,7 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-router.get('/isTopTen/:exam_id', async (req, res, next) => {
+router.get('/isTopTen/:exam_id', isAdmin, async (req, res, next) => {
     try {
         const { exam_score, exam_time } = req.query;
         const { exam_id } = req.params;
@@ -36,7 +40,7 @@ router.get('/topTen/:exam_id', async (req, res, next) => {
     try {
         const { exam_id } = req.params
         const topTen = await Score.topTenByExamId(exam_id)
-        return res.json({ topTen });
+        return res.json({ ...topTen });
     } catch (e) {
         return next(e)
     }

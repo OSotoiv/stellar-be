@@ -16,9 +16,7 @@ const app = express();
 // app.use(cors({
 //     origin: 'http://localhost:3000' // update with your domain and port
 // }));
-app.use(cors({
-    origin: '*' // update with your domain and port
-}));
+app.use(cors());
 app.use(express.json());
 app.use(authenticateJWT);
 

@@ -27,10 +27,11 @@ class User {
         if (validUser === true && validPassword === true) {
             return { username }
         }
-        throw new UnauthorizedError();
+        throw new UnauthorizedError('inside auth');
     }
 
     static async userExist(username) {
+        //would usually check the database here but for sake of simplicity I have a hardcoded SECRET_KEY
         return username === SECRET_KEY
     }
 

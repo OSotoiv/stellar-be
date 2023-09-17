@@ -50,11 +50,19 @@ class Score {
     }
     static async topTenByExamId(exam_id) {
         const result = await db.query(
-            `SELECT * FROM leaders WHERE exam_id = $1
-            ORDER BY exam_score DESC, exam_time ASC;`,
+            `SELECT e.title AS exam_title, json_agg(l.*) AS top_ten
+            FROM (
+                SELECT id, username, exam_score, exam_time, exam_id
+                FROM leaders
+                WHERE exam_id = $1
+                ORDER BY exam_score DESC, exam_time ASC
+            ) AS l
+            JOIN math_exam e ON l.exam_id = e.id
+            GROUP BY e.title;`,
             [exam_id]
         )
-        return result.rows;
+        if (!result.rows[0]) throw new NotFoundError(`exam id:${exam_id} not found`)
+        return result.rows[0];
     }
 
     static async allLeaders() {
@@ -65,8 +73,8 @@ class Score {
         if (!allExams.rows[0]) throw new NotFoundError('Cant find the leaders!!!!')
 
         const leaderboard = await Promise.all(allExams.rows.map(async (exam) => {
-            const leaders = await this.topTenByExamId(exam.exam_id);
-            const results = { ...exam, top_ten: leaders }
+            const { top_ten } = await this.topTenByExamId(exam.exam_id);
+            const results = { ...exam, top_ten }
             return results
         }))
         return leaderboard;
