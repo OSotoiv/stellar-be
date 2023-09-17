@@ -8,7 +8,7 @@ const jsonschema = require("jsonschema");
 const corsMiddleware = require("../middleware/corsMiddleware")
 const { isAdmin } = require("../middleware/auth");
 
-router.use(corsMiddleware)
+// router.use(corsMiddleware)
 
 router.post('/', isAdmin, async (req, res, next) => {
     try {
